@@ -32,13 +32,19 @@ export class CustomerService {
 
   async deleteCustomer(data: DeleteCustomerInput): Promise<void> {
     // delete the customer based on id or email
-    const { id, email } = data;
-    
-    if (id) {
-      await this.prisma.customer.delete({ where: { id } });
-    } else if (email) {
-      await this.prisma.customer.delete({ where: { email } });
-    } else {
+    try {
+      const { id, email } = data;
+  
+      if (id) {
+        await this.prisma.customer.delete({ where: { id } });
+      } else if (email) {
+        await this.prisma.customer.delete({ where: { email } });
+      } else {
+        throw new Error(" 'id' or 'email' must be provided for deletion.");
+      }
+    } catch (error) {
+      console.error('Error deleting customer:', error.message);
+      throw new Error('Failed to delete customer.');
     }
   }
 }
