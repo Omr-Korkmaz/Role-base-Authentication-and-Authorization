@@ -30,3 +30,22 @@ export class GetCustomerInput {
   @Field(() => WhereCustomerInput, { nullable: true })
   where: WhereCustomerInput;
 }
+
+// added these Mutation regarding on task
+
+@InputType()
+export class CreateCustomerInput {
+  @Field(() => String)
+  email: string;
+  @Field(() => String)
+  password: string;
+}
+
+@InputType()
+export class UpdateCustomerInput {
+  @Field(() => String, { nullable: true })
+  email?: string;
+
+  @Field(() => String, { nullable: true })
+  password?: string;
+}
