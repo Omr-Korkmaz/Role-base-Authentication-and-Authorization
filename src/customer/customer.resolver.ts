@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Customer } from 'lib/entities/customer.entity';
 import { CustomerService } from './customer.service';
-import { GetCustomerInput } from './dto/customer.input';
+import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 
 import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
 
@@ -15,7 +15,9 @@ export class CustomerResolver {
   }
 
   @Mutation(() => Customer)
-  async createCustomer(@Args('data') data: CreateCustomerInput): Promise<Customer> {
+  async createCustomer(
+    @Args('data') data: CreateCustomerInput,
+  ): Promise<Customer> {
     return this.customerService.createCustomer(data);
   }
 
@@ -32,8 +34,8 @@ export class CustomerResolver {
     return this.customerService.updateCustomer(id, data);
   }
 
-  // @Mutation(() => Customer)
-  // async deleteCustomer(@Args('id') id: string): Promise<void> {
-  //   return this.customerService.deleteCustomer(id);
-  // }
+  @Mutation(() => Customer)
+  async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<void> {
+    return this.customerService.deleteCustomer(data);
+  }
 }

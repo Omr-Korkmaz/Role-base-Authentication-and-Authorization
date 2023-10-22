@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { GetCustomerInput } from './dto/customer.input';
+import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 
 import { Customer } from '../lib/entities/customer.entity';
 import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
@@ -30,8 +30,15 @@ export class CustomerService {
     return this.prisma.customer.update({ where: { id }, data });
   }
 
-  // async deleteCustomer(id: string): Promise<void> {
-  //   await this.getCustomerById(id); // Ensure customer exists
-  //   return this.prisma.customer.delete({ where: { id } });
-  // }
+  async deleteCustomer(data: DeleteCustomerInput): Promise<void> {
+    // delete the customer based on id or email
+    const { id, email } = data;
+    
+    if (id) {
+      await this.prisma.customer.delete({ where: { id } });
+    } else if (email) {
+      await this.prisma.customer.delete({ where: { email } });
+    } else {
+    }
+  }
 }

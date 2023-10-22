@@ -40,6 +40,7 @@ input WhereCustomerInput {
 type Mutation {
   createCustomer(data: CreateCustomerInput!): Customer!
   updateCustomer(id: String!, data: UpdateCustomerInput!): Customer!
+  deleteCustomer(data: DeleteCustomerInput!): Customer!
 }
 
 input CreateCustomerInput {
@@ -50,4 +51,9 @@ input CreateCustomerInput {
 input UpdateCustomerInput {
   email: String
   password: String
+}
+
+input DeleteCustomerInput {
+  id: String
+  email: String
 }
