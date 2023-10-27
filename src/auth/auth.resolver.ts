@@ -1,34 +1,36 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { RefreshTokenGuard } from './guards/refreshToken.guard';
+import { NewTokensResponse } from './dto/newTokensResponse';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
-import { CreateAuthInput } from './dto/create-auth.input';
+import { SignUpInput } from './dto/signup-input';
 import { UpdateAuthInput } from './dto/update-auth.input';
 import { SignResponse } from './dto/sign-response';
-import { SignUpInput } from './dto/signup-input';
+import { LoginInput } from './dto/login-input';
+import { LogoutResponse } from './dto/logout-response';
+import { Public } from './decorators/public.decorator';
+import { CurrentCustomer } from './decorators/currentCustomer.decorator';
+import { CurrentCustomerId } from './decorators/currentCustomerId.decorator';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  // @Mutation(() => Auth)
-  // createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
-  //   return this.authService.create(createAuthInput);
-  // }
-
-  // @Public()
+  @Public()
   @Mutation(() => SignResponse)
   signup(@Args('signUpInput') signUpInput: SignUpInput) {
     return this.authService.signup(signUpInput);
   }
 
-
-  @Query(() => [Auth], { name: 'auth' })
-  findAll() {
-    return this.authService.findAll();
+  @Public()
+  @Mutation(() => SignResponse)
+  login(@Args('loginInput') loginInput: LoginInput) {
+    return this.authService.login(loginInput);
   }
 
   @Query(() => Auth, { name: 'auth' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id') id:string) {
     return this.authService.findOne(id);
   }
 
@@ -37,10 +39,23 @@ export class AuthResolver {
     return this.authService.update(updateAuthInput.id, updateAuthInput);
   }
 
-  @Mutation(() => Auth)
-  removeAuth(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.remove(id);
+  @Mutation(() => LogoutResponse)
+  logout(@Args('id') id: string) {
+    return this.authService.logout(id);
   }
 
-}
+  @Query(() => String)
+  hello() {
+    return 'Hello World!';
+  }
 
+  @Public()
+  @UseGuards(RefreshTokenGuard)
+  @Mutation(() => NewTokensResponse)
+  getNewTokens(
+    @CurrentCustomerId() customerId: string,
+    @CurrentCustomer('refreshToken') refreshToken: string,
+  ) {
+    return this.authService.getNewTokens(customerId, refreshToken);
+  }
+}

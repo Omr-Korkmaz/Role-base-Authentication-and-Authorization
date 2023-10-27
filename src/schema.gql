@@ -11,6 +11,7 @@ type Customer {
   """Date and time when the object was updated last time."""
   updatedAt: Timestamp!
   email: String!
+  username: String!
 }
 
 """
@@ -18,9 +19,31 @@ type Customer {
 """
 scalar Timestamp
 
+type NewTokensResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type Auth {
+  """Example field (placeholder)"""
+  exampleField: String!
+}
+
+type SignResponse {
+  accessToken: String!
+  refreshToken: String!
+  customer: Customer!
+}
+
+type LogoutResponse {
+  loggedOut: Boolean!
+}
+
 type Query {
   customers(data: GetCustomerInput!): [Customer!]!
   customer(id: String!): Customer!
+  auth(id: String!): Auth!
+  hello: String!
 }
 
 input GetCustomerInput {
@@ -41,6 +64,11 @@ type Mutation {
   createCustomer(data: CreateCustomerInput!): Customer!
   updateCustomer(id: String!, data: UpdateCustomerInput!): Customer!
   deleteCustomer(data: DeleteCustomerInput!): Customer!
+  signup(signUpInput: SignUpInput!): SignResponse!
+  login(loginInput: LoginInput!): SignResponse!
+  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
+  logout(id: String!): LogoutResponse!
+  getNewTokens: NewTokensResponse!
 }
 
 input CreateCustomerInput {
@@ -56,4 +84,22 @@ input UpdateCustomerInput {
 input DeleteCustomerInput {
   id: String
   email: String
+}
+
+input SignUpInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input UpdateAuthInput {
+  username: String
+  email: String
+  password: String
+  id: String!
 }
