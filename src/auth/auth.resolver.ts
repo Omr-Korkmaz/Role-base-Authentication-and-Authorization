@@ -3,15 +3,24 @@ import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
 import { CreateAuthInput } from './dto/create-auth.input';
 import { UpdateAuthInput } from './dto/update-auth.input';
+import { SignResponse } from './dto/sign-response';
+import { SignUpInput } from './dto/signup-input';
 
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => Auth)
-  createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
-    return this.authService.create(createAuthInput);
+  // @Mutation(() => Auth)
+  // createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
+  //   return this.authService.create(createAuthInput);
+  // }
+
+  // @Public()
+  @Mutation(() => SignResponse)
+  signup(@Args('signUpInput') signUpInput: SignUpInput) {
+    return this.authService.signup(signUpInput);
   }
+
 
   @Query(() => [Auth], { name: 'auth' })
   findAll() {
@@ -32,4 +41,6 @@ export class AuthResolver {
   removeAuth(@Args('id', { type: () => Int }) id: number) {
     return this.authService.remove(id);
   }
+
 }
+

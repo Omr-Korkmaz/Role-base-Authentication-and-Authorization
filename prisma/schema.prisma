@@ -14,7 +14,9 @@ datasource db {
 model Customer {
   id        String   @id @unique @default(uuid())
   email     String   @unique
-  password  String
+  username String? //  I will change it later it is complain for default value
+  password  String // hashedPassword
+  hashedRefreshToken String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
