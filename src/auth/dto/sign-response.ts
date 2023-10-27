@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Customer } from '../../lib/entities/customer.entity';
+import { Customer, UserRole } from '../../lib/entities/customer.entity';
 
 @ObjectType()
 export class SignResponse {
@@ -11,4 +11,13 @@ export class SignResponse {
 
   @Field(() => Customer)
   customer: Customer;
+
+
+
+  @Field()
+  verificationCode: string;
+
+  //roles
+  // @Field(() => UserRole)
+  // role: UserRole; 
 }

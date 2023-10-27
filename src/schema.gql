@@ -33,6 +33,7 @@ type SignResponse {
   accessToken: String!
   refreshToken: String!
   customer: Customer!
+  verificationCode: String!
 }
 
 type LogoutResponse {
@@ -65,6 +66,7 @@ type Mutation {
   updateCustomer(id: String!, data: UpdateCustomerInput!): Customer!
   deleteCustomer(data: DeleteCustomerInput!): Customer!
   signup(signUpInput: SignUpInput!): SignResponse!
+  verifyAccount(email: String!, verificationCode: String!): Boolean!
   login(loginInput: LoginInput!): SignResponse!
   updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
   logout(id: String!): LogoutResponse!
@@ -95,6 +97,7 @@ input SignUpInput {
 input LoginInput {
   email: String!
   password: String!
+  verificationCode: String
 }
 
 input UpdateAuthInput {

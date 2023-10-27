@@ -17,11 +17,48 @@ import { UseGuards } from '@nestjs/common';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Public()
+  // @Public()
+  // @Mutation(() => SignResponse)
+  // signup(@Args('signUpInput') signUpInput: SignUpInput) {
+  //   return this.authService.signup(signUpInput);
+  // }
+
+
+
+
+
   @Mutation(() => SignResponse)
-  signup(@Args('signUpInput') signUpInput: SignUpInput) {
+  async signup(@Args('signUpInput') signUpInput: SignUpInput): Promise<SignResponse> {
     return this.authService.signup(signUpInput);
   }
+
+  @Mutation(() => Boolean)
+  async verifyAccount(
+    @Args('email') email: string,
+    @Args('verificationCode') verificationCode: string,
+  ): Promise<boolean> {
+    return this.authService.verifyAccount(email, verificationCode);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @Public()
   @Mutation(() => SignResponse)

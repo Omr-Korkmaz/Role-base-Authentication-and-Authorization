@@ -13,4 +13,8 @@ export class LoginInput {
   @IsString()
   @Field()
   password: string;
+
+
+  @Field({ nullable: true })
+  verificationCode?: string;
 }

@@ -18,4 +18,6 @@ export class SignUpInput {
   @IsString()
   @Field()
   password: string;
+
+
 }

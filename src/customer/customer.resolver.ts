@@ -1,9 +1,10 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Customer } from 'lib/entities/customer.entity';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Customer, UserRole } from 'lib/entities/customer.entity';
 import { CustomerService } from './customer.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 
 import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
+import { ForbiddenException } from '@nestjs/common';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
@@ -38,4 +39,17 @@ export class CustomerResolver {
   async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<void> {
     return this.customerService.deleteCustomer(data);
   }
+  // @Mutation(() => Customer)
+  // async deleteCustomer(
+  //   @Args('data') data: DeleteCustomerInput,
+  //   @Context() context: any, // Add context to access user information
+  // ): Promise<void> {
+  //   // Check if the user has the admin role
+  //   if (context?.user?.role !== UserRole.ADMIN) {
+  //     throw new ForbiddenException('Access Denied');
+  //   }
+
+  //   // Continue with the delete operation
+  //   return this.customerService.deleteCustomer(data);
+  // }
 }
