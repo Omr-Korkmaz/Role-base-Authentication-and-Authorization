@@ -1,10 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Base } from 'lib/entities/base.entity';
 
-export enum UserRole {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-}
+// export enum UserRole {
+//   USER = 'USER',
+//   ADMIN = 'ADMIN',
+// }
 
 @ObjectType()
 export class Customer extends Base {
@@ -12,14 +12,8 @@ export class Customer extends Base {
   email: string;
 
   @Field()
-  // @Field(() => String, { nullable: true })
-username: string;
+  username: string;
 
-// @Field(() => UserRole)
-// role: UserRole;
-
-
+  // @Field(() => UserRole)
+  // role: UserRole;
 }
-
-
-

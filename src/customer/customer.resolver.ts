@@ -1,10 +1,12 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Customer, UserRole } from 'lib/entities/customer.entity';
+import { Customer } from 'lib/entities/customer.entity';
+
 import { CustomerService } from './customer.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 
 import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
 import { ForbiddenException } from '@nestjs/common';
+import { JwtPayload } from 'src/auth/types';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
@@ -15,12 +17,12 @@ export class CustomerResolver {
     return this.customerService.findAll({ skip, take, where });
   }
 
-  @Mutation(() => Customer)
-  async createCustomer(
-    @Args('data') data: CreateCustomerInput,
-  ): Promise<Customer> {
-    return this.customerService.createCustomer(data);
-  }
+  // @Mutation(() => Customer)
+  // async createCustomer(
+  //   @Args('data') data: CreateCustomerInput,
+  // ): Promise<Customer> {
+  //   return this.customerService.createCustomer(data);
+  // }
 
   @Query(() => Customer)
   async customer(@Args('id') id: string): Promise<Customer> {
@@ -39,6 +41,9 @@ export class CustomerResolver {
   async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<void> {
     return this.customerService.deleteCustomer(data);
   }
+
+
+  
   // @Mutation(() => Customer)
   // async deleteCustomer(
   //   @Args('data') data: DeleteCustomerInput,
@@ -52,4 +57,23 @@ export class CustomerResolver {
   //   // Continue with the delete operation
   //   return this.customerService.deleteCustomer(data);
   // }
+
+
+
+  // Inside CustomerResolver class in customer.resolver.ts
+// @Mutation(() => Customer)
+// async deleteCustomer(
+//   @Args('data') data: DeleteCustomerInput,
+//   @Context('customer') customer: JwtPayload, // Assuming you have a JwtPayload type
+// ) {
+//   // Check if the logged-in user is an admin
+//   if (customer.role !== UserRole.ADMIN) {
+//     throw new ForbiddenException('Access Denied');
+//   }
+
+//   // Continue with the delete operation
+//   return this.customerService.deleteCustomer(data);
+// }
+
+
 }

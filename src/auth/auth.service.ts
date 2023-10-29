@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma.service';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { SignUpInput } from './dto/signup-input';
 import { UpdateAuthInput } from './dto/update-auth.input';
 import { ConfigService } from '@nestjs/config';
@@ -8,6 +8,7 @@ import * as argon from 'argon2';
 import { LoginInput } from './dto/login-input';
 import { generateVerificationCode } from 'src/utils/crypto';
 import { SignResponse } from './dto/sign-response';
+// import { UserRole } from 'src/lib/entities/customer.entity';
 
 @Injectable()
 export class AuthService {
@@ -16,48 +17,76 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-  // async signup(signUpInput: SignUpInput) {
-  //   const password = await argon.hash(signUpInput.password);
-  //   const customer = await this.prisma.customer.create({
-  //     data: {
-  //       username: signUpInput.username,
-  //       password,
-  //       email: signUpInput.email,
-  //     },
-  //   });
-  //   const { accessToken, refreshToken } = await this.createTokens(
-  //     customer.id,
-  //     customer.email,
-  //   );
-  //   await this.updateRefreshToken(customer.id, refreshToken);
-  //   return { accessToken, refreshToken, customer };
-  // }
-
-  async signup(signUpInput: SignUpInput): Promise<SignResponse> {
-    const hashedPassword =  await argon.hash(signUpInput.password);
-
-    const verificationCode = generateVerificationCode();
-
+  async signup(signUpInput: SignUpInput) {
+    const password = await argon.hash(signUpInput.password);
     const customer = await this.prisma.customer.create({
       data: {
-        email: signUpInput.email,
         username: signUpInput.username,
-        password: hashedPassword,
-        verificationCode: verificationCode,
+        password,
+        email: signUpInput.email,
       },
     });
-
-    // sendVerificationCodeByEmail(customer.email, verificationCode);
-
-    // Assuming you return some response to the client
-    return {
-      accessToken: 'yourAccessToken',
-      refreshToken: 'yourRefreshToken',
-      customer: customer,
-      verificationCode: verificationCode
-
-    };
+    const { accessToken, refreshToken } = await this.createTokens(
+      customer.id,
+      customer.email,
+    );
+    await this.updateRefreshToken(customer.id, refreshToken);
+    return { accessToken, refreshToken, customer };
   }
+
+  // isSuperAdmin(email: string): boolean {
+  //   return email === 'omer@gmail.com'; // Replace with the actual super admin email
+  // }
+
+
+// Inside AuthService class in auth.service.ts
+// async assignRole(email: string, role: UserRole): Promise<boolean> {
+//   // Check if the role is a valid role (optional)
+//   const validRoles = Object.values(UserRole);
+//   if (!validRoles.includes(role)) {
+//     throw new BadRequestException('Invalid role');
+//   }
+
+//   // Update the customer's role
+//   await this.prisma.customer.update({
+//     where: { email },
+//     data: { role },
+//   });
+
+//   return true;
+// }
+
+
+
+
+
+
+  // async signup(signUpInput: SignUpInput): Promise<SignResponse> {
+  //   const hashedPassword =  await argon.hash(signUpInput.password);
+
+  //   const verificationCode = generateVerificationCode();
+
+  //   const customer = await this.prisma.customer.create({
+  //     data: {
+  //       email: signUpInput.email,
+  //       username: signUpInput.username,
+  //       password: hashedPassword,
+  //       role: UserRole.USER, // Set the default role for a new customer
+  //       verificationCode: verificationCode,
+  //     },
+  //   });
+
+  //   // sendVerificationCodeByEmail(customer.email, verificationCode);
+
+  //   // Assuming you return some response to the client
+  //   return {
+  //     accessToken: 'yourAccessToken',
+  //     refreshToken: 'yourRefreshToken',
+  //     customer: customer,
+  //     verificationCode: verificationCode
+
+  //   };
+  // }
 
   async verifyAccount(email: string, verificationCode: string): Promise<boolean> {
     const customer = await this.prisma.customer.findUnique({
@@ -144,7 +173,7 @@ export class AuthService {
         accessToken,
       },
       {
-        expiresIn: '7d',
+        expiresIn: '1d',
         secret: this.configService.get('REFRESH_TOKEN_SECRET'),
       },
     );

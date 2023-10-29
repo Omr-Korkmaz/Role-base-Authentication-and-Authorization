@@ -11,20 +11,22 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
+// enum Role {
+//   USER
+//   ADMIN
+// }
 
 model Customer {
-  id                 String  @id @unique @default(uuid())
-  email              String  @unique
-  username           String? //  I will change it later it is complain for default value
-  password           String // hashedPassword
+  id            String    @id @unique @default(uuid())
+  email         String    @unique
+  username      String?   @unique
+  password      String    // hashedPassword
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
   hashedRefreshToken String?
-  // role      UserRole @default(USER) // default value is USER
-  verificationCode   String? //  verification code field
-  isVerified         Boolean? 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // role          Role      @default(USER)
+  isVerified    Boolean   @default(false)
+  verificationCode String?
+
 }

@@ -100,3 +100,4 @@ input UpdateAuthInput {
   password: String
   id: String!
 }
+

@@ -1,6 +1,6 @@
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { NewTokensResponse } from './dto/newTokensResponse';
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
 import { SignUpInput } from './dto/signup-input';
@@ -11,26 +11,43 @@ import { LogoutResponse } from './dto/logout-response';
 import { Public } from './decorators/public.decorator';
 import { CurrentCustomer } from './decorators/currentCustomer.decorator';
 import { CurrentCustomerId } from './decorators/currentCustomerId.decorator';
-import { UseGuards } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
+// import { UserRole } from 'src/lib/entities/customer.entity';
+import { JwtPayload } from './types';
 
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  // @Public()
-  // @Mutation(() => SignResponse)
-  // signup(@Args('signUpInput') signUpInput: SignUpInput) {
-  //   return this.authService.signup(signUpInput);
-  // }
-
-
-
-
-
+  @Public()
   @Mutation(() => SignResponse)
-  async signup(@Args('signUpInput') signUpInput: SignUpInput): Promise<SignResponse> {
+  signup(@Args('signUpInput') signUpInput: SignUpInput) {
     return this.authService.signup(signUpInput);
   }
+
+
+  // @Mutation(() => Boolean)
+  // async assignRole(
+  //   @Args('email') email: string,
+  //   @Args('role') role: UserRole,
+  //   @Context('customer') customer: JwtPayload, // Assuming you have a JwtPayload type
+  // ) {
+  //   // Check if the logged-in user is the super admin
+  //   if (!this.authService.isSuperAdmin(customer.email)) {
+  //     throw new ForbiddenException('Access Denied');
+  //   }
+  
+  //   // Assign the role
+  //   return this.authService.assignRole(email, role);
+  // }
+
+  
+
+
+  // @Mutation(() => SignResponse)
+  // async signup(@Args('signUpInput') signUpInput: SignUpInput): Promise<SignResponse> {
+  //   return this.authService.signup(signUpInput);
+  // }
 
   @Mutation(() => Boolean)
   async verifyAccount(
