@@ -17,45 +17,11 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-  // async signup(signUpInput: SignUpInput) {
-  //   const password = await argon.hash(signUpInput.password);
-  //   const customer = await this.prisma.customer.create({
-  //     data: {
-  //       username: signUpInput.username,
-  //       password,
-  //       email: signUpInput.email,
-  //     },
-  //   });
-  //   const { accessToken, refreshToken } = await this.createTokens(
-  //     customer.id,
-  //     customer.email,
-  //   );
-  //   await this.updateRefreshToken(customer.id, refreshToken);
-  //   return { accessToken, refreshToken, customer };
-  // }
+
 
   // isSuperAdmin(email: string): boolean {
   //   return email === 'omer@gmail.com'; // Replace with the actual super admin email
   // }
-
-
-// Inside AuthService class in auth.service.ts
-// async assignRole(email: string, role: UserRole): Promise<boolean> {
-//   // Check if the role is a valid role (optional)
-//   const validRoles = Object.values(UserRole);
-//   if (!validRoles.includes(role)) {
-//     throw new BadRequestException('Invalid role');
-//   }
-
-//   // Update the customer's role
-//   await this.prisma.customer.update({
-//     where: { email },
-//     data: { role },
-//   });
-
-//   return true;
-// }
-
 
 
 
@@ -78,7 +44,7 @@ export class AuthService {
 
     // sendVerificationCodeByEmail(customer.email, verificationCode);
 
-    // Assuming you return some response to the client
+
     return {
       accessToken: 'yourAccessToken',
       refreshToken: 'yourRefreshToken',
@@ -94,7 +60,7 @@ export class AuthService {
     });
 
     if (customer && customer.verificationCode === verificationCode) {
-      // Update customer status as verified (or perform any other necessary actions)
+
       await this.prisma.customer.update({
         where: { email },
         data: { isVerified: true },

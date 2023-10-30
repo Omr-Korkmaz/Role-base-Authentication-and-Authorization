@@ -43,28 +43,11 @@ export class CustomerResolver {
   }
 
 
-  
-  // @Mutation(() => Customer)
-  // async deleteCustomer(
-  //   @Args('data') data: DeleteCustomerInput,
-  //   @Context() context: any, // Add context to access user information
-  // ): Promise<void> {
-  //   // Check if the user has the admin role
-  //   if (context?.user?.role !== UserRole.ADMIN) {
-  //     throw new ForbiddenException('Access Denied');
-  //   }
 
-  //   // Continue with the delete operation
-  //   return this.customerService.deleteCustomer(data);
-  // }
-
-
-
-  // Inside CustomerResolver class in customer.resolver.ts
 // @Mutation(() => Customer)
 // async deleteCustomer(
 //   @Args('data') data: DeleteCustomerInput,
-//   @Context('customer') customer: JwtPayload, // Assuming you have a JwtPayload type
+//   @Context('customer') customer: JwtPayload,
 // ) {
 //   // Check if the logged-in user is an admin
 //   if (customer.role !== UserRole.ADMIN) {
