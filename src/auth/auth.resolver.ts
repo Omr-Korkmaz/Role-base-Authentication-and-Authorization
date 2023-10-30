@@ -19,11 +19,11 @@ import { JwtPayload } from './types';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Public()
-  @Mutation(() => SignResponse)
-  signup(@Args('signUpInput') signUpInput: SignUpInput) {
-    return this.authService.signup(signUpInput);
-  }
+  // @Public()
+  // @Mutation(() => SignResponse)
+  // signup(@Args('signUpInput') signUpInput: SignUpInput) {
+  //   return this.authService.signup(signUpInput);
+  // }
 
 
   // @Mutation(() => Boolean)
@@ -44,10 +44,10 @@ export class AuthResolver {
   
 
 
-  // @Mutation(() => SignResponse)
-  // async signup(@Args('signUpInput') signUpInput: SignUpInput): Promise<SignResponse> {
-  //   return this.authService.signup(signUpInput);
-  // }
+  @Mutation(() => SignResponse)
+  async signup(@Args('signUpInput') signUpInput: SignUpInput): Promise<SignResponse> {
+    return this.authService.signup(signUpInput);
+  }
 
   @Mutation(() => Boolean)
   async verifyAccount(

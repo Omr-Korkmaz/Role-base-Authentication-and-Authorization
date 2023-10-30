@@ -15,7 +15,7 @@ export class SignResponse {
 
 
   @Field()
-  verificationCode: string;
+  verificationCode?: string;
 
   //roles
   // @Field(() => UserRole)

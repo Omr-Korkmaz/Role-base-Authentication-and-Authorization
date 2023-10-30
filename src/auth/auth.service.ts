@@ -17,22 +17,22 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-  async signup(signUpInput: SignUpInput) {
-    const password = await argon.hash(signUpInput.password);
-    const customer = await this.prisma.customer.create({
-      data: {
-        username: signUpInput.username,
-        password,
-        email: signUpInput.email,
-      },
-    });
-    const { accessToken, refreshToken } = await this.createTokens(
-      customer.id,
-      customer.email,
-    );
-    await this.updateRefreshToken(customer.id, refreshToken);
-    return { accessToken, refreshToken, customer };
-  }
+  // async signup(signUpInput: SignUpInput) {
+  //   const password = await argon.hash(signUpInput.password);
+  //   const customer = await this.prisma.customer.create({
+  //     data: {
+  //       username: signUpInput.username,
+  //       password,
+  //       email: signUpInput.email,
+  //     },
+  //   });
+  //   const { accessToken, refreshToken } = await this.createTokens(
+  //     customer.id,
+  //     customer.email,
+  //   );
+  //   await this.updateRefreshToken(customer.id, refreshToken);
+  //   return { accessToken, refreshToken, customer };
+  // }
 
   // isSuperAdmin(email: string): boolean {
   //   return email === 'omer@gmail.com'; // Replace with the actual super admin email
@@ -61,32 +61,32 @@ export class AuthService {
 
 
 
-  // async signup(signUpInput: SignUpInput): Promise<SignResponse> {
-  //   const hashedPassword =  await argon.hash(signUpInput.password);
+  async signup(signUpInput: SignUpInput): Promise<SignResponse> {
+    const hashedPassword =  await argon.hash(signUpInput.password);
 
-  //   const verificationCode = generateVerificationCode();
+    const verificationCode = generateVerificationCode();
 
-  //   const customer = await this.prisma.customer.create({
-  //     data: {
-  //       email: signUpInput.email,
-  //       username: signUpInput.username,
-  //       password: hashedPassword,
-  //       role: UserRole.USER, // Set the default role for a new customer
-  //       verificationCode: verificationCode,
-  //     },
-  //   });
+    const customer = await this.prisma.customer.create({
+      data: {
+        email: signUpInput.email,
+        username: signUpInput.username,
+        password: hashedPassword,
+        // role: UserRole.USER, // Set the default role for a new customer
+        verificationCode: verificationCode,
+      },
+    });
 
-  //   // sendVerificationCodeByEmail(customer.email, verificationCode);
+    // sendVerificationCodeByEmail(customer.email, verificationCode);
 
-  //   // Assuming you return some response to the client
-  //   return {
-  //     accessToken: 'yourAccessToken',
-  //     refreshToken: 'yourRefreshToken',
-  //     customer: customer,
-  //     verificationCode: verificationCode
+    // Assuming you return some response to the client
+    return {
+      accessToken: 'yourAccessToken',
+      refreshToken: 'yourRefreshToken',
+      customer: customer,
+      verificationCode: verificationCode
 
-  //   };
-  // }
+    };
+  }
 
   async verifyAccount(email: string, verificationCode: string): Promise<boolean> {
     const customer = await this.prisma.customer.findUnique({
