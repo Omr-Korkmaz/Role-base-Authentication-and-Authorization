@@ -40,7 +40,7 @@ export class CustomerService {
     // delete the customer based on id or email
     try {
       const { id, email } = data;
-  
+
       if (id) {
         await this.prisma.customer.delete({ where: { id } });
       } else if (email) {

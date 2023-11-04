@@ -12,12 +12,10 @@ export class SignResponse {
   @Field(() => Customer)
   customer: Customer;
 
-
-
   @Field()
   verificationCode?: string;
 
   //roles
   // @Field(() => UserRole)
-  // role: UserRole; 
+  // role: UserRole;
 }

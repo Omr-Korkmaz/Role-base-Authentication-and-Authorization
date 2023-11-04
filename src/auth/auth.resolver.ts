@@ -19,33 +19,12 @@ import { JwtPayload } from './types';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  // @Public()
-  // @Mutation(() => SignResponse)
-  // signup(@Args('signUpInput') signUpInput: SignUpInput) {
-  //   return this.authService.signup(signUpInput);
-  // }
-
-
-  // @Mutation(() => Boolean)
-  // async assignRole(
-  //   @Args('email') email: string,
-  //   @Args('role') role: UserRole,
-  //   @Context('customer') customer: JwtPayload, // Assuming you have a JwtPayload type
-  // ) {
-  //   // Check if the logged-in user is the super admin
-  //   if (!this.authService.isSuperAdmin(customer.email)) {
-  //     throw new ForbiddenException('Access Denied');
-  //   }
-  
-  //   // Assign the role
-  //   return this.authService.assignRole(email, role);
-  // }
-
-  
 
 
   @Mutation(() => SignResponse)
-  async signup(@Args('signUpInput') signUpInput: SignUpInput): Promise<SignResponse> {
+  async signup(
+    @Args('signUpInput') signUpInput: SignUpInput,
+  ): Promise<SignResponse> {
     return this.authService.signup(signUpInput);
   }
 
@@ -57,26 +36,6 @@ export class AuthResolver {
     return this.authService.verifyAccount(email, verificationCode);
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @Public()
   @Mutation(() => SignResponse)
   login(@Args('loginInput') loginInput: LoginInput) {
@@ -84,7 +43,7 @@ export class AuthResolver {
   }
 
   @Query(() => Auth, { name: 'auth' })
-  findOne(@Args('id') id:string) {
+  findOne(@Args('id') id: string) {
     return this.authService.findOne(id);
   }
 

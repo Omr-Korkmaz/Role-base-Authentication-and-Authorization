@@ -16,16 +16,15 @@ enum Role {
 }
 
 model Customer {
-  id            String    @id @unique @default(uuid())
-  email         String    @unique
-  username      String?   @unique
-  password      String    // hashedPassword
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @unique @default(uuid())
+  email     String   @unique
+  username  String
+  password  String // hashedPassword
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   hashedRefreshToken String?
-  // role          Role      @default(USER)
-  isVerified    Boolean   @default(false)
-  verificationCode String?
-
+  role               Role    @default(USER)
+  isVerified         Boolean @default(false)
+  verificationCode   String?
 }

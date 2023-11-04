@@ -1,6 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma.service';
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { SignUpInput } from './dto/signup-input';
 import { UpdateAuthInput } from './dto/update-auth.input';
 import { ConfigService } from '@nestjs/config';
@@ -18,17 +22,12 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-
   // isSuperAdmin(email: string): boolean {
-  //   return email === 'omer@gmail.com'; // Replace with the actual super admin email
+  //   return email === 'omer@gmail.com';
   // }
 
-
-
-
-
   async signup(signUpInput: SignUpInput): Promise<SignResponse> {
-    const hashedPassword =  await argon.hash(signUpInput.password);
+    const hashedPassword = await argon.hash(signUpInput.password);
 
     const verificationCode = generateVerificationCode();
 
@@ -44,23 +43,23 @@ export class AuthService {
 
     // sendVerificationCodeByEmail(customer.email, verificationCode);
 
-
     return {
       accessToken: 'yourAccessToken',
       refreshToken: 'yourRefreshToken',
       customer: customer,
-      verificationCode: verificationCode
-
+      verificationCode: verificationCode,
     };
   }
 
-  async verifyAccount(email: string, verificationCode: string): Promise<boolean> {
+  async verifyAccount(
+    email: string,
+    verificationCode: string,
+  ): Promise<boolean> {
     const customer = await this.prisma.customer.findUnique({
       where: { email },
     });
 
     if (customer && customer.verificationCode === verificationCode) {
-
       await this.prisma.customer.update({
         where: { email },
         data: { isVerified: true },
@@ -71,10 +70,6 @@ export class AuthService {
 
     return false;
   }
-
-  
-
-
 
   async login(loginInput: LoginInput) {
     const customer = await this.prisma.customer.findUnique({
@@ -97,7 +92,6 @@ export class AuthService {
     if (customer.verificationCode !== loginInput.verificationCode) {
       throw new ForbiddenException('Access Denied');
     }
-  
 
     const { accessToken, refreshToken } = await this.createTokens(
       customer.id,

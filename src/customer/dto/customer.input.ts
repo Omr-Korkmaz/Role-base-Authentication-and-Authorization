@@ -58,4 +58,3 @@ export class DeleteCustomerInput {
   @Field(() => String, { nullable: true })
   email?: string;
 }
-
