@@ -5,8 +5,9 @@ import { CustomerService } from './customer.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 
 import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { JwtPayload } from 'src/auth/types';
+import { AccessGuard } from 'src/auth/guards/access.guard';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
@@ -37,22 +38,26 @@ export class CustomerResolver {
     return this.customerService.updateCustomer(id, data);
   }
 
-  @Mutation(() => Customer)
-  async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<void> {
-    return this.customerService.deleteCustomer(data);
-  }
-
   // @Mutation(() => Customer)
-  // async deleteCustomer(
-  //   @Args('data') data: DeleteCustomerInput,
-  //   @Context('customer') customer: JwtPayload,
-  // ) {
-  //   // Check if the logged-in user is an admin
-  //   if (customer.role !== UserRole.ADMIN) {
-  //     throw new ForbiddenException('Access Denied');
-  //   }
-
-  //   // Continue with the delete operation
+  // async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<void> {
   //   return this.customerService.deleteCustomer(data);
   // }
+
+
+
+
+
+
+  @Mutation(() => Customer)
+  @UseGuards(AccessGuard) // Add the access guard
+  async deleteCustomer(
+    @Args('data') data: DeleteCustomerInput,
+    @Context('customer') customer: JwtPayload,
+  ) {
+    // Check if the logged-in user is an admin
+    if (customer.role !== "ADMIN") {
+      throw new ForbiddenException('Access Denied');
+    }
+    return this.customerService.deleteCustomer(data);
+}
 }

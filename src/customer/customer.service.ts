@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 
-// import { Customer, UserRole } from '../lib/entities/customer.entity';
-import { Customer } from '@prisma/client';
+import { Customer } from '../lib/entities/customer.entity';
+// import { Customer } from '@prisma/client';
 
 import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
 

@@ -10,10 +10,10 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
+// enum Role {
+//   USER
+//   ADMIN
+// }
 
 model Customer {
   id        String   @id @unique @default(uuid())
@@ -24,7 +24,7 @@ model Customer {
   updatedAt DateTime @updatedAt
 
   hashedRefreshToken String?
-  role               Role    @default(USER)
+  role               String    @default("USER")
   isVerified         Boolean @default(false)
   verificationCode   String?
 }

@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Base } from './base.entity';
+// import { Role } from 'src/auth/user-role.enum';
 
 
 @ObjectType()
@@ -10,6 +11,12 @@ export class Customer extends Base {
   @Field()
   username: string;
 
-  // @Field(() => UserRole)
-  // role: UserRole;
+
+  @Field()
+  role: string;
+
+  @Field()
+  isVerified: boolean;
+  // @Field(() => Role)
+  // role: Role;
 }

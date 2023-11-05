@@ -89,8 +89,18 @@ export class AuthService {
       throw new ForbiddenException('Access Denied');
     }
 
+    if (!customer.isVerified) {
+
+
     if (customer.verificationCode !== loginInput.verificationCode) {
       throw new ForbiddenException('Access Denied');
+    }
+
+      // Set customer as verified after successful verification
+      await this.prisma.customer.update({
+        where: { email: loginInput.email },
+        data: { isVerified: true },
+      });
     }
 
     const { accessToken, refreshToken } = await this.createTokens(

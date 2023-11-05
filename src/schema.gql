@@ -12,6 +12,8 @@ type Customer {
   updatedAt: Timestamp!
   email: String!
   username: String!
+  role: String!
+  isVerified: Boolean!
 }
 
 """
@@ -34,6 +36,7 @@ type SignResponse {
   refreshToken: String!
   customer: Customer!
   verificationCode: String!
+  isVerified: Boolean!
 }
 
 type LogoutResponse {
