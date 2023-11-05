@@ -17,6 +17,5 @@ export class Customer extends Base {
 
   @Field()
   isVerified: boolean;
-  // @Field(() => Role)
-  // role: Role;
+
 }

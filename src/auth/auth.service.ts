@@ -108,6 +108,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.createTokens(
       customer.id,
       customer.email,
+      customer.role, // Include the user's role in the payload
     );
 
     await this.updateRefreshToken(customer.id, refreshToken);
@@ -127,11 +128,12 @@ export class AuthService {
     return `This action removes a #${id} auth`;
   }
 
-  async createTokens(customerId: string, email: string) {
+  async createTokens(customerId: string, email: string, role:string) {
     const accessToken = this.jwtService.sign(
       {
         customerId,
         email,
+        role
       },
       {
         expiresIn: '5h',
@@ -184,6 +186,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.createTokens(
       customer.id,
       customer.email,
+      customer.role
     );
     await this.updateRefreshToken(customer.id, refreshToken);
     return { accessToken, refreshToken, customer };

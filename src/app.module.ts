@@ -12,6 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import {  APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/accessToken.guard';
 
+import { RolesGuard } from './auth/guards/roles.guard';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,6 +33,6 @@ import { AccessTokenGuard } from './auth/guards/accessToken.guard';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, { provide: APP_GUARD, useClass: AccessTokenGuard } ],
+  providers: [AppService, PrismaService, { provide: APP_GUARD, useClass: AccessTokenGuard }, RolesGuard ],
 })
 export class AppModule {}

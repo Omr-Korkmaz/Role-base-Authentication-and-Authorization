@@ -47,7 +47,6 @@ type Query {
   customers(data: GetCustomerInput!): [Customer!]!
   customer(id: String!): Customer!
   auth(id: String!): Auth!
-  hello: String!
 }
 
 input GetCustomerInput {

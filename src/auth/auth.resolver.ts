@@ -21,7 +21,7 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
 
-
+  @Public()
   @Mutation(() => SignResponse)
   async signup(
     @Args('signUpInput') signUpInput: SignUpInput,
@@ -57,17 +57,8 @@ export class AuthResolver {
   logout(@Args('id') id: string) {
     return this.authService.logout(id);
   }
-  // @UseGuards(AccessTokenGuard)
-  @Public()
-  @Query(() => String)
-  hello() {
-    return 'Hello World!';
-  }
 
-
-
-
-  @Public()
+  // @Public()
   @UseGuards(RefreshTokenGuard)
   @Mutation(() => NewTokensResponse)
   getNewTokens(
