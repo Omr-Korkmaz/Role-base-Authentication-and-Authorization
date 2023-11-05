@@ -14,6 +14,7 @@ import { CurrentCustomerId } from './decorators/currentCustomerId.decorator';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 // import { UserRole } from 'src/lib/entities/customer.entity';
 import { JwtPayload } from './types';
+import { AccessTokenGuard } from './guards/accessToken.guard';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -56,11 +57,15 @@ export class AuthResolver {
   logout(@Args('id') id: string) {
     return this.authService.logout(id);
   }
-
+  // @UseGuards(AccessTokenGuard)
+  @Public()
   @Query(() => String)
   hello() {
     return 'Hello World!';
   }
+
+
+
 
   @Public()
   @UseGuards(RefreshTokenGuard)

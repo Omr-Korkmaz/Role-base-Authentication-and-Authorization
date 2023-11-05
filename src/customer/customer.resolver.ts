@@ -13,6 +13,8 @@ import { AccessGuard } from 'src/auth/guards/access.guard';
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
+
+
   @Query(() => [Customer])
   async customers(@Args('data') { skip, take, where }: GetCustomerInput) {
     return this.customerService.findAll({ skip, take, where });
@@ -29,6 +31,11 @@ export class CustomerResolver {
   async customer(@Args('id') id: string): Promise<Customer> {
     return this.customerService.getCustomerById(id);
   }
+
+
+
+
+
 
   @Mutation(() => Customer)
   async updateCustomer(
@@ -47,9 +54,8 @@ export class CustomerResolver {
 
 
 
-
-  @Mutation(() => Customer)
   @UseGuards(AccessGuard) // Add the access guard
+  @Mutation(() => Customer)
   async deleteCustomer(
     @Args('data') data: DeleteCustomerInput,
     @Context('customer') customer: JwtPayload,
@@ -58,6 +64,12 @@ export class CustomerResolver {
     if (customer.role !== "ADMIN") {
       throw new ForbiddenException('Access Denied');
     }
+
+    // if (customer.id === data.id) {
+    //   throw new ForbiddenException('Admin cannot delete themselves');
+    // }
+
+
     return this.customerService.deleteCustomer(data);
 }
 }

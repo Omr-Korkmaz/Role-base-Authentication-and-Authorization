@@ -89,6 +89,7 @@ input SignUpInput {
   username: String!
   email: String!
   password: String!
+  role: String!
 }
 
 input LoginInput {
@@ -101,5 +102,6 @@ input UpdateAuthInput {
   username: String
   email: String
   password: String
+  role: String
   id: String!
 }

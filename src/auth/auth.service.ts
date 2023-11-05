@@ -36,7 +36,7 @@ export class AuthService {
         email: signUpInput.email,
         username: signUpInput.username,
         password: hashedPassword,
-        // role: UserRole.USER, // Set the default role for a new customer
+        role: signUpInput.role, // Set the default role for a new customer
         verificationCode: verificationCode,
       },
     });
@@ -48,6 +48,8 @@ export class AuthService {
       refreshToken: 'yourRefreshToken',
       customer: customer,
       verificationCode: verificationCode,
+
+    
     };
   }
 
@@ -132,7 +134,7 @@ export class AuthService {
         email,
       },
       {
-        expiresIn: '1h',
+        expiresIn: '5h',
         secret: this.configService.get('ACCESS_TOKEN_SECRET'),
       },
     );

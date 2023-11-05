@@ -9,7 +9,13 @@ export class AccessGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().req.customer as JwtPayload;
 
+
+    console.log('Current user role:', user.role);
+
     // Check if the role is ADMIN
-    return user && user.role === "ADMIN";
+    return  user.role === "ADMIN";
+
+    // return? role === "ADMIN";
+
 }
 }
