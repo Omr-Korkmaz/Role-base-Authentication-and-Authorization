@@ -1,20 +1,15 @@
-import { RefreshTokenGuard } from './guards/refreshToken.guard';
-import { NewTokensResponse } from './dto/newTokensResponse';
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
 import { SignUpInput } from './dto/signup-input';
-import { UpdateAuthInput } from './dto/update-auth.input';
 import { SignResponse } from './dto/sign-response';
 import { LoginInput } from './dto/login-input';
 import { LogoutResponse } from './dto/logout-response';
 import { Public } from './decorators/public.decorator';
-import { CurrentCustomer } from './decorators/currentCustomer.decorator';
-import { CurrentCustomerId } from './decorators/currentCustomerId.decorator';
-import { ForbiddenException, UseGuards } from '@nestjs/common';
-// import { UserRole } from 'src/lib/entities/customer.entity';
-import { JwtPayload } from './types';
-import { AccessTokenGuard } from './guards/accessToken.guard';
+
+import { UseGuards } from '@nestjs/common';
+
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -43,28 +38,14 @@ export class AuthResolver {
     return this.authService.login(loginInput);
   }
 
-  @Query(() => Auth, { name: 'auth' })
-  findOne(@Args('id') id: string) {
-    return this.authService.findOne(id);
-  }
 
-  @Mutation(() => Auth)
-  updateAuth(@Args('updateAuthInput') updateAuthInput: UpdateAuthInput) {
-    return this.authService.update(updateAuthInput.id, updateAuthInput);
-  }
+
+
+  // @UseGuards(RefreshTokenGuard)
 
   @Mutation(() => LogoutResponse)
   logout(@Args('id') id: string) {
     return this.authService.logout(id);
   }
 
-  // @Public()
-  @UseGuards(RefreshTokenGuard)
-  @Mutation(() => NewTokensResponse)
-  getNewTokens(
-    @CurrentCustomerId() customerId: string,
-    @CurrentCustomer('refreshToken') refreshToken: string,
-  ) {
-    return this.authService.getNewTokens(customerId, refreshToken);
-  }
 }

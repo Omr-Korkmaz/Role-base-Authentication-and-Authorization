@@ -12,7 +12,6 @@ import * as argon from 'argon2';
 import { LoginInput } from './dto/login-input';
 import { generateVerificationCode } from 'src/utils/crypto';
 import { SignResponse } from './dto/sign-response';
-// import { UserRole } from 'src/lib/entities/customer.entity';
 
 @Injectable()
 export class AuthService {
@@ -21,10 +20,6 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-
-  // isSuperAdmin(email: string): boolean {
-  //   return email === 'omer@gmail.com';
-  // }
 
   async signup(signUpInput: SignUpInput): Promise<SignResponse> {
     const hashedPassword = await argon.hash(signUpInput.password);
@@ -48,8 +43,6 @@ export class AuthService {
       refreshToken: 'yourRefreshToken',
       customer: customer,
       verificationCode: verificationCode,
-
-    
     };
   }
 
@@ -92,11 +85,9 @@ export class AuthService {
     }
 
     if (!customer.isVerified) {
-
-
-    if (customer.verificationCode !== loginInput.verificationCode) {
-      throw new ForbiddenException('Access Denied');
-    }
+      if (customer.verificationCode !== loginInput.verificationCode) {
+        throw new ForbiddenException('Access Denied');
+      }
 
       // Set customer as verified after successful verification
       await this.prisma.customer.update({
@@ -108,7 +99,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.createTokens(
       customer.id,
       customer.email,
-      customer.role, // Include the user's role in the payload
+      customer.role,
     );
 
     await this.updateRefreshToken(customer.id, refreshToken);
@@ -116,24 +107,12 @@ export class AuthService {
     return { accessToken, refreshToken, customer };
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: string, updateAuthInput: UpdateAuthInput) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} auth`;
-  }
-
-  async createTokens(customerId: string, email: string, role:string) {
+  async createTokens(customerId: string, email: string, role: string) {
     const accessToken = this.jwtService.sign(
       {
         customerId,
         email,
-        role
+        role,
       },
       {
         expiresIn: '5h',
@@ -186,7 +165,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.createTokens(
       customer.id,
       customer.email,
-      customer.role
+      customer.role,
     );
     await this.updateRefreshToken(customer.id, refreshToken);
     return { accessToken, refreshToken, customer };

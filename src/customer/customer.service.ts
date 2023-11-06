@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
-
 import { Customer } from '../lib/entities/customer.entity';
-// import { Customer } from '@prisma/client';
-
-import { CreateCustomerInput, UpdateCustomerInput } from './dto/customer.input';
+import {  UpdateCustomerInput } from './dto/customer.input';
 
 @Injectable()
 export class CustomerService {
@@ -15,14 +12,6 @@ export class CustomerService {
     const { skip, take, cursor, where } = params;
     return this.prisma.customer.findMany({ skip, take, cursor, where });
   }
-
-  // async createCustomer(data: CreateCustomerInput): Promise<Customer> {
-  //   return this.prisma.customer.create({ data });
-  // }
-  // async createCustomer(data: CreateCustomerInput): Promise<Customer> {
-  //   const defaultRole = UserRole.USER; // Set the default role for a new customer
-  //   return this.prisma.customer.create({ data: { ...data, role: defaultRole } });
-  // }
 
   async getCustomerById(id: string): Promise<Customer> {
     return this.prisma.customer.findUnique({ where: { id } });

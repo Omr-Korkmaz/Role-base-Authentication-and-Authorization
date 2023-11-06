@@ -1,11 +1,8 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Customer } from 'lib/entities/customer.entity';
-
 import { CustomerService } from './customer.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
-
 import { UpdateCustomerInput } from './dto/customer.input';
-
 import { Auth } from 'src/auth/decorators/auth.decotator';
 
 @Resolver(() => Customer)
@@ -17,7 +14,6 @@ export class CustomerResolver {
   async customers(@Args('data') { skip, take, where }: GetCustomerInput) {
     return this.customerService.findAll({ skip, take, where });
   }
-
 
   @Auth('USER', 'ADMIN')
   @Query(() => Customer)

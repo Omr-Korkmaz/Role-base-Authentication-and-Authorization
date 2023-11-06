@@ -21,16 +21,6 @@ type Customer {
 """
 scalar Timestamp
 
-type NewTokensResponse {
-  accessToken: String!
-  refreshToken: String!
-}
-
-type Auth {
-  """Example field (placeholder)"""
-  exampleField: String!
-}
-
 type SignResponse {
   accessToken: String!
   refreshToken: String!
@@ -46,7 +36,6 @@ type LogoutResponse {
 type Query {
   customers(data: GetCustomerInput!): [Customer!]!
   customer(id: String!): Customer!
-  auth(id: String!): Auth!
 }
 
 input GetCustomerInput {
@@ -69,9 +58,7 @@ type Mutation {
   signup(signUpInput: SignUpInput!): SignResponse!
   verifyAccount(email: String!, verificationCode: String!): Boolean!
   login(loginInput: LoginInput!): SignResponse!
-  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
   logout(id: String!): LogoutResponse!
-  getNewTokens: NewTokensResponse!
 }
 
 input UpdateCustomerInput {
@@ -95,12 +82,4 @@ input LoginInput {
   email: String!
   password: String!
   verificationCode: String
-}
-
-input UpdateAuthInput {
-  username: String
-  email: String
-  password: String
-  role: String
-  id: String!
 }

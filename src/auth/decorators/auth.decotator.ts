@@ -1,4 +1,3 @@
-// auth.decorator.ts
 import { applyDecorators, UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from './roles.decorator';
