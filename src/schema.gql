@@ -54,7 +54,7 @@ input WhereCustomerInput {
 
 type Mutation {
   updateCustomer(id: String!, data: UpdateCustomerInput!): Customer!
-  deleteCustomer(data: DeleteCustomerInput!): Customer!
+  deleteCustomer(data: DeleteCustomerInput!): String!
   signup(signUpInput: SignUpInput!): SignResponse!
   verifyAccount(email: String!, verificationCode: String!): Boolean!
   login(loginInput: LoginInput!): SignResponse!

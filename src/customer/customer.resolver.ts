@@ -30,9 +30,16 @@ export class CustomerResolver {
     return this.customerService.updateCustomer(id, data);
   }
 
+
   @Auth('ADMIN')
-  @Mutation(() => Customer)
-  async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<void> {
-    return this.customerService.deleteCustomer(data);
+@Mutation(() => String) 
+async deleteCustomer(@Args('data') data: DeleteCustomerInput): Promise<string> {
+  try {
+    await this.customerService.deleteCustomer(data);
+    return 'Customer deleted successfully.';
+  } catch (error) {
+    console.error('Error deleting customer:', error.message);
+    throw new Error('Failed to delete customer.');
   }
+}
 }
