@@ -3,7 +3,7 @@ import { Customer } from 'lib/entities/customer.entity';
 import { CustomerService } from './customer.service';
 import { DeleteCustomerInput, GetCustomerInput } from './dto/customer.input';
 import { UpdateCustomerInput } from './dto/customer.input';
-import { Auth } from 'src/auth/decorators/auth.decotator';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
